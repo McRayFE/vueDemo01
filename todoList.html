@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="lib/bootstrap.min.css">
+  <script src="lib/jquery-1.7.2.js"></script>
+  <script src="lib/bootstrap.js"></script>
+  <script src="vue.js"></script>
+</head>
+<body>
+   <div class="container" id="box">
+     <div class="form">
+       <div class="form-group">
+         <label for="username">用户名:</label>
+         <input value='' v-model="username" type="text" id="username" class="form-control" placeholder="输入用户名">
+       </div>
+       <div class="form-group">
+         <label for="age">年龄:</label>
+         <input value='' v-model="age" type="text" id="age" class="form-control" placeholder="输入年龄">
+       </div>
+       <div class="form-group">
+         <button type="button" class="btn btn-primary" v-on:click="add()">添加</button>
+         <input type="reset" class="btn btn-danger" value="重置">
+       </div>
+     </div>
+     <hr>
+     <table class="table table-bordered table-hover">
+       <caption class="h2 text-info" style="margin-bottom:10px;">用户信息表</caption>
+       <tr>
+         <th class="text-center">序号</th>
+         <th class="text-center">名字</th>
+         <th class="text-center">年龄</th>
+         <th class="text-center">操作</th>
+       </tr>
+       <tr class="text-center" v-for="(item,index) in myData">
+         <!-- $index与$key已经移除，现在用(item,index)的形式获得index -->
+         <td>{{index}}</td>
+         <td>{{item.name}}</td>
+         <td>{{item.age}}</td>
+         <td>
+           <button class="btn btn-sm" data-toggle="modal" data-target="#layer" v-on:click="nowIndex=index">删除</button>
+         </td>
+       </tr>
+       <tr v-show="myData.length!==0">
+         <td colspan="4" class="text-right">
+           <button class="btn btn-danger" data-toggle="modal" data-target="#layer1">删除全部</button>
+         </td>
+       </tr>
+       <tr v-show="myData.length===0">
+         <td colspan="4" class="text-center text-muted">
+           <p>暂无数据...</p>
+         </td>
+       </tr>
+     </table>
+
+     <!--模态框-->
+     <div role="dialog" class="modal fade" id="layer">
+         <div class="modal-dialog">
+           <div class="modal-content">
+             <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal">
+                 <span>&times;</span>
+               </button>
+               <h4 class="modal-title">确认删除么?</h4>
+             </div>
+             <div class="modal-body text-right">
+               <button class="btn btn-primary" data-dismiss="modal" v-on:click="del()">确认</button>
+               <button class="btn btn-danger" data-dismiss="modal">取消</button>
+             </div>
+           </div>
+         </div>
+     </div>
+     <!--删除全部的模态框-->
+     <div role="dialog" class="modal fade" id="layer1">
+       <div class="modal-dislog">
+         <div class="modal-content">
+           <div class="header">
+             <button type="button" class="close" data-dismiss="modal">
+               <span>&times;</span>
+             </button>
+             <h4>确认删除全部么?</h4>
+           </div>
+           <div class="modal-body text-right">
+               <button class="btn btn-primary" data-dismiss="modal" v-on:click="delAll()">确认</button>
+               <button class="btn btn-danger" data-dismiss="modal">取消</button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+   <script>
+        new Vue({
+          el:"#box",
+          data:{
+            myData:[],
+            username:'',
+            age:'',
+            nowIndex:1
+          },
+          methods:{
+            add:function(){
+              this.myData.push({
+                name:this.username,
+                age:this.age
+              });
+              this.username = '';
+              this.age = '';
+            },
+            del:function(){
+              this.myData.splice(this.nowIndex,1);
+            },
+            delAll:function(){
+              this.myData = [];
+            }
+          }
+        })
+   </script>
+</body>
+</html>

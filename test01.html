@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <script src="vue.js"></script>
+</head>
+<body>
+   <div class="box">
+     <div v-if="seen">条件</div>
+     <input type="text" v-model="msg">
+     <input type="button" value="按钮" v-on:click="toggle">
+     <ul>
+       <li v-for="item in items">
+         {{item}}
+       </li>
+     </ul>
+     <my-component></my-component>
+     <simple-counter></simple-counter>
+     <simple-counter></simple-counter>
+     <simple-counter></simple-counter>
+   </div>
+   <script>
+       //注册的是全局组件
+       var data = {
+         counter:0
+       }
+       Vue.component('my-component',{
+         template:"<h1>hello vue</h1>"
+       })
+       Vue.component('simple-counter',{
+         template:"<button v-on:click='counter += 1'>{{counter}}</button>",
+         data : function(){
+           return {
+             counter:0
+           }
+         }
+       })
+       new Vue({
+         el:'.box',
+         data:{
+           msg:'hello vue',
+           seen:true,
+           items:['apple','banana','bear']
+         },
+         methods:{
+           hide:function(){
+             this.seen = false;
+           },
+           toggle:function(){
+             this.seen = this.seen === false ? true : false;
+           }
+         }
+       })
+   </script>
+</body>
+</html>
